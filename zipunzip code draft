@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Prompt the user for location, units, and API key
+read -p "Enter location (e.g., karnataka): " LOCATION
+read -p "Enter units (e.g., metric): " UNITS
+
+# Define the API URL with the provided inputs
+API_URL="https://api.tomorrow.io/v4/weather/realtime?location=$LOCATION&units=$UNITS&apikey=GYqDS1cdNZomcewfWzmpTGhuEXem89BN"
+
+# Define the number of requests to make
+NUM_REQUESTS=5
+
+# Create a directory to store JSON files
+mkdir -p json_files
+
+# Make multiple GET requests to the API using cURL
+for ((i=1; i<=$NUM_REQUESTS; i++)); do
+    # Make the API request and save the response to a JSON file
+    curl --request GET --url "$API_URL" --header 'accept: application/json' -o "json_files/output_$i.json"
+
+    # Extract temperature value from JSON output
+    temperature=$(jq -r '.data.values.temperature' "json_files/output_$i.json")
+
+    # Define weather message and icon URL based on temperature value
+    if (( $(echo "$temperature > 30" | bc -l) )); then
+        weather_message="It's hot!"
+        icon_url="https://cdn.iconscout.com/icon/premium/png-512-thumb/hot-weather-9110804-7413575.png?f=webp&w=256"
+    elif (( $(echo "$temperature > 20" | bc -l) )); then
+        weather_message="It's warm."
+        icon_url="https://i.pinimg.com/564x/5b/04/93/5b0493b3a910f7ce7a737969bf3bc5d1.jpg"
+    else
+        weather_message="It's cold."
+        icon_url="https://cdn-icons-png.flaticon.com/512/6232/6232631.png"
+    fi
+
+    # Output weather message and icon URL
+    echo "Weather Message for Request $i: $weather_message"
+    echo "Icon URL for Request $i: $icon_url"
+done
+
+# Zip the JSON files
+zip -r json_files.zip json_files
+
+# Unzip the JSON files
+unzip json_files.zip -d extracted_json_files
+
+# Optional: Cleanup temporary files and directories
+rm -rf json_files
+rm json_files.zip
