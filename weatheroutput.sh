@@ -24,12 +24,11 @@ for ((i=1; i<=$NUM_REQUESTS; i++)); do
     # Make the API request and save the response to a JSON file
     file_name="output_${i}_${curtime}_${LOCATION}"
     curl --request GET --url "$API_URL" --header 'accept: application/json' -o "json_files/${file_name}.json"
-    # Extract temperature value from JSON output
+    # Extract temperature, wind, precipitation and humidity value from JSON output
     temperature=$(jq -r '.data.values.temperature' "json_files/${file_name}.json")
     humidity=$(jq -r '.data.values.humidity' "json_files/${file_name}.json")
     windSpeed=$(jq -r '.data.values.windSpeed' "json_files/${file_name}.json")
     precipitationProb=$(jq -r '.data.values.precipitationProbability' "json_files/${file_name}.json")
-    echo "$temperature"
     # Define weather message and icon URL based on temperature value
     avgtemp=$(echo "scale=2; ($avgtemp + $temperature)" | bc)
     avghum=$(echo "scale=2; ($avghum + $humidity)" | bc)
@@ -70,6 +69,8 @@ else
     weather_message+="and a low chance of rain."
 fi
 # Output weather message and icon URL
+echo "$LOCATION {"
+echo "extracted_json_files_${LOCATION}/ {"
 echo "$weather_message {"
 echo "$icon_url {"
 echo "$avgtemp {"
@@ -83,7 +84,7 @@ echo "$avgprecip {"
 zip -r json_files.zip json_files
 
 # Unzip the JSON files
-unzip json_files.zip -d extracted_json_files
+unzip json_files.zip -d extracted_json_files_${LOCATION}
 
 # Optional: Cleanup temporary files and directories
 rm -rf json_files

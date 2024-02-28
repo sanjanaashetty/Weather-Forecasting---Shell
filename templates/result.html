@@ -1,19 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Report</title>
+<link rel="stylesheet" href="../static/styles.css">
+<link rel="stylesheet" href="../static/weather.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Result</h1>
-        <pre>{{ msg }}</pre>
-        <pre>Temperature is: {{temperature}}</pre>
-        <img src="{{img_url}}">
-        <a href="/">Back</a>
+<div class="weather-card">
+  <h1 id="location">{{city}}</h1>
+  <div class="weather-info">
+    <div>
+      <img src="../static/pics/temperature.png" alt="Temperature">
+      <span id="temperature">{{temp}}</span>
     </div>
+    <div>
+      <img src="../static/pics/humidity.png" alt="Humidity">
+      <span id="humidity">{{humidity}}</span>
+    </div>
+    <div>
+      <img src="../static/pics/wind speed.png" alt="Wind Speed">
+      <span id="wind">{{wind}}</span>
+    </div>
+    <div>
+      <img src="../static/pics/precipitation.png" alt="Precipitation Probability">
+      <span id="precipitation">{{precip}}</span>
+    </div>
+    
+  </div>
+  <div class="weather-card">
+    <div class="weather-info">
+        <h5>{{msg}}</h5>
+        <img src="{{img_url}}">
+    </div>
+  </div>
+  <div class="weather-card">
+    <div class="weather-info">
+        <h6>The resulting json files are stored in the folder: {{file}}, with the current time stamp.</h6>
+    </div>
+</div>
+
+
+
+</div>
 </body>
 </html>
