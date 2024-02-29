@@ -11,20 +11,34 @@
 <div class="weather-card">
   <h1 id="location">{{city}}</h1>
   <div class="weather-info">
+    <div><h6>Temperature</h6></div>
+    <div><h6>Humidity</h6></div>
+    <div><h6>Wind Speed</h6></div>
+    <div><h6>Precipitation Probability</h6></div>
+  </div>
+  <div class="weather-info">
+    
     <div>
       <img src="../static/pics/temperature.png" alt="Temperature">
+      <br>
       <span id="temperature">{{temp}}</span>
     </div>
+    
     <div>
       <img src="../static/pics/humidity.png" alt="Humidity">
+      <br>
       <span id="humidity">{{humidity}}</span>
     </div>
+  
     <div>
       <img src="../static/pics/wind speed.png" alt="Wind Speed">
+      <br>
       <span id="wind">{{wind}}</span>
     </div>
+    
     <div>
       <img src="../static/pics/precipitation.png" alt="Precipitation Probability">
+      <br>
       <span id="precipitation">{{precip}}</span>
     </div>
     
